@@ -417,7 +417,6 @@ Creates and returns a new clip
         "location": "Paris",
         "video_file": "aws video link",
         "caption": "Paris in Spring",
-        "comments": [],
         "is_private": false,
         "created_at": "2024-04-20 18:20:00"
       }
@@ -477,7 +476,6 @@ Updates and returns an existing clip
         "location": "London",
         "video_file": "aws video link",
         "caption": "London in Spring",
-        "comments": [],
         "is_private": false,
         "created_at": "2024-04-20 18:20:00"
       }
@@ -796,7 +794,7 @@ Deletes an existing Comment
 
 ## Likes
 
-### Get all likes by clip_id
+### Get all likes & dislikes by clip_id
 
 Returns a count of all the likes by clip
 
@@ -817,45 +815,7 @@ Returns a count of all the likes by clip
   ```json
   {
       {
-        "likes": <number of likes>
-      }
-  }
-  ```
-
-* Error response: Couldn't find a Clip with the specified id
-
-- Status Code: 404
-- Headers:
-- Content-Type: application/json
-- Body:
-
-  ```json
-  {
-    "message": "Clip couldn't be found"
-  }
-  ```
-
-### Get all dislikes by clip_id
-
-Returns a count of all the dislikes by clip
-
-- Require Authentication: false
-- Require Authorization: false
-
-* Request:
-  - Method: GET
-  - URL: /api/clips/:clipId/dislikes
-  - Body: None
-
-* Successful Response:
-  - Status Code: 200
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-
-  ```json
-  {
-      {
+        "likes": <number of likes>,
         "dislikes": <number of dislikes>
       }
   }
@@ -924,7 +884,8 @@ Creates and returns a like
   - Body:
   ```json
   {
-    "clip_id": 1
+    "clip_id": 1,
+    "is_like": true
   }
   ```
 * Successful Response:
@@ -949,35 +910,6 @@ Creates and returns a like
 	"message": "Clip couldn't be found"
 }
 ```
-
-### Create a dislike
-
-Creates and returns a dislike
-
-- Require Authentication: true
-- Require Authorization: false
-
-* Request:
-  - Method: POST
-  - URL: /api/clips/:clipId/dislikes
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-  ```json
-  {
-    "clip_id": 1
-  }
-  ```
-* Successful Response:
-  - Status Code: 201
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-  ```json
-  {
-  	"message": "You have successfully disliked the Clip"
-  }
-  ```
 
 * Error Response:
   - Status Code: 404
@@ -1006,7 +938,8 @@ Updates and returns an existing like, turned into a dislike
   - Body:
   ```json
   {
-    "clip_id": 1
+    "clip_id": 1,
+    "is_like": false
   }
   ```
 * Successful Response:
@@ -1017,47 +950,6 @@ Updates and returns an existing like, turned into a dislike
   ```json
   {
   	"message": "You have successfully disliked the Clip"
-  }
-  ```
-
-* Error Response:
-  - Status Code: 404
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-
-```json
-{
-	"message": "Clip couldn't be found"
-}
-```
-
-### Edit a dislike
-
-Updates and returns an existing dislike, turned into a like
-
-- Require Authentication: true
-- Require Authorization: dislike must be created by logged in user
-
-* Request:
-  - Method: PUT
-  - URL: /api/clips/:clipId/dislikes
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-  ```json
-  {
-    "clip_id": 1
-  }
-  ```
-* Successful Response:
-  - Status Code: 200
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-  ```json
-  {
-  	"message": "You have successfully liked the Clip"
   }
   ```
 
@@ -1105,41 +997,6 @@ Deletes a like for a Clip
 ```json
 {
 	"message": "Like couldn't be found"
-}
-```
-
-### Delete a dislike
-Deletes a like for a Clip
-
-- Require Authentication: true
-- Require Authorization: Deleted dislike must be owned by logged in user
-
-* Request:
-  - Method: DELETE
-  - URL: /api/clips/:clipId/dislikes
-  - Headers:
-    - Content-Type: application/json
-  - Body: None
-
-* Successful Response:
-  - Status Code: 200
-  - Headers:
-    - Content-Type: application/json
-```json
-{
-	"message": "Successfully Deleted Dislike"
-}
-```
-
-* Error Response:
-  - Status Code: 404
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-
-```json
-{
-	"message": "Dislike couldn't be found"
 }
 ```
 
@@ -1229,21 +1086,46 @@ Creates and returns a follow
   }
   ```
 
-### Update a follow
+* Error Response: You already follow the user
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
 
-Updates and returns an existing follow to a close friend
+```json
+{
+	"message": "You are already following the user"
+}
+```
+
+* Error Response: User does not exist
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "User could not be found"
+}
+```
+
+### Update a follower to a close friend
+
+Updates and returns an existing follower to a close friend
 
 - Require Authentication: true
 - Require Authorization: follow must be created by logged in user
 
 * Request:
   - Method: PUT
-  - URL: /api/follows/following/:userId
+  - URL: /api/follows/follower/:userId
   - Body:
 
   ```json
   {
-    "following_user_id": 1
+    "follower_user_id": 1,
+    "is_close_friend": true
   }
   ```
 
@@ -1260,6 +1142,42 @@ Updates and returns an existing follow to a close friend
       }
   }
   ```
+
+* Error Response: User does not follow you
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "The user does not follow you"
+}
+```
+
+* Error Response: User is already a close friend
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "User is already a close friend"
+}
+```
+
+* Error Response: User does not exist
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "User could not be found"
+}
+```
 
 ### Delete a follow
 
@@ -1292,3 +1210,83 @@ Deletes an existing follow
       }
   }
   ```
+
+* Error Response: You are not following the user
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "You do not follow the user"
+}
+```
+
+* Error Response: User does not exist
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "User could not be found"
+}
+```
+
+### Delete a follower
+
+Deletes an existing follower
+
+- Require Authentication: true
+- Require Authorization: follower must be a follower of the logged in user
+
+* Request:
+  - Method: DELETE
+  - URL: /api/follows/follower/:userId
+  - Body:
+
+  ```json
+  {
+    "follower_user_id": 1
+  }
+  ```
+
+* Successful Response:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+  ```json
+  {
+      {
+        "message": "<user> has been removed from your follower list"
+      }
+  }
+  ```
+
+* Error Response: User does not exist
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "User could not be found"
+}
+```
+
+* Error Response: User does not follow you
+  - Status Code: 400
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "User does not follow you"
+}
+```

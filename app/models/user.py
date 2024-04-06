@@ -2,7 +2,7 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from flask_login import UserMixin
-
+from sqlalchemy.orm import relationship
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -21,8 +21,8 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    clips = db.relationship('Clip', backref='user', cascade="all, delete")
-    comments = db.relationship('Comment', backref='user', cascade='all, delete')
+    uploaded_clips = relationship('Clip', back_populates='uploader', cascade="all, delete")
+    posted_comments = relationship('Comment', back_populates='poster', cascade='all, delete')
 
 
     @property

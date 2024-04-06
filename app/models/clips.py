@@ -1,5 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
+from sqlalchemy.orm import relationship
 
 
 class Clip(db.Model):
@@ -17,8 +18,8 @@ class Clip(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    user = db.relationship('User', backref='clips')
-    comments = db.relationship('Comment', backref='clip', cascade="all, delete")
+    uploader = relationship('User', back_populates='uploaded_clips')
+    comments_on_clip = relationship('Comment', back_populates='clip_comment', cascade="all, delete")
 
     def to_dict(self):
         return {

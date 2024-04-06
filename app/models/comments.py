@@ -1,6 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
-
+from sqlalchemy.orm import relationship
 
 class Comment(db.Model):
     __tablename__ = 'comments'
@@ -15,8 +15,8 @@ class Comment(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    user = db.relationship('User', backref='comments')
-    clip = db.relationship('Clip', backref='comments')
+    poster = relationship('User', back_populates='posted_comments')
+    clip_comment = relationship('Clip', back_populates='comments_on_clip')
 
     def to_dict(self):
         return {

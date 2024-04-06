@@ -4,7 +4,7 @@
 
 ![db-schema]
 
-[db-schema]: ./images/database_schema.png
+[db-schema]: ./database_schema.png
 
 ## TravelTok API Documentation
 

@@ -794,46 +794,6 @@ Deletes an existing Comment
 
 ## Likes
 
-### Get all likes & dislikes by clip_id
-
-Returns a count of all the likes by clip
-
-- Require Authentication: false
-- Require Authorization: false
-
-* Request:
-  - Method: GET
-  - URL: /api/clips/:clipId/likes
-  - Body: None
-
-* Successful Response:
-  - Status Code: 200
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-
-  ```json
-  {
-      {
-        "likes": <number of likes>,
-        "dislikes": <number of dislikes>
-      }
-  }
-  ```
-
-* Error response: Couldn't find a Clip with the specified id
-
-- Status Code: 404
-- Headers:
-- Content-Type: application/json
-- Body:
-
-  ```json
-  {
-    "message": "Clip couldn't be found"
-  }
-  ```
-
 ### Get all liked Clips by logged in user
 
 Returns all clips liked by the logged in user

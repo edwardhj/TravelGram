@@ -153,6 +153,32 @@ information.
     }
     ```
 
+### Log Out a User
+
+Logs out a current user
+
+- Require Authentication: true
+- Request
+
+  - Method: POST
+  - URL: /api/auth/logout
+  - Headers:
+    - Content-Type: application/json
+  - Body: none
+
+* Successful Response
+
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+    ```json
+    {
+    	"message": "User has been successfully logged out"
+    }
+    ```    
+
 ### Sign Up a User
 
 Creates a new user, logs them in as the current user, and returns the current
@@ -363,7 +389,7 @@ Creates and returns a new clip
 
 - Request
   - Method: POST
-  - URL: /api/clips/new
+  - URL: /api/clips
   - Body:
 
 ```json
@@ -779,7 +805,7 @@ Returns a count of all the likes by clip
 
 * Request:
   - Method: GET
-  - URL: /api/likes/:clipId
+  - URL: /api/clips/:clipId/likes
   - Body: None
 
 * Successful Response:
@@ -809,6 +835,45 @@ Returns a count of all the likes by clip
   }
   ```
 
+### Get all dislikes by clip_id
+
+Returns a count of all the dislikes by clip
+
+- Require Authentication: false
+- Require Authorization: false
+
+* Request:
+  - Method: GET
+  - URL: /api/clips/:clipId/dislikes
+  - Body: None
+
+* Successful Response:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+  ```json
+  {
+      {
+        "dislikes": <number of dislikes>
+      }
+  }
+  ```
+
+* Error response: Couldn't find a Clip with the specified id
+
+- Status Code: 404
+- Headers:
+- Content-Type: application/json
+- Body:
+
+  ```json
+  {
+    "message": "Clip couldn't be found"
+  }
+  ```
+
 ### Get all liked Clips by logged in user
 
 Returns all clips liked by the logged in user
@@ -818,7 +883,7 @@ Returns all clips liked by the logged in user
 
 * Request:
   - Method: GET
-  - URL: /api/likes
+  - URL: /api/clips/:clipId/likes/current
   - Headers:
     - Content-Type: application/json
   - Body: None
@@ -853,7 +918,7 @@ Creates and returns a like
 
 * Request:
   - Method: POST
-  - URL: /api/likes/:clipId
+  - URL: /api/clips/:clipId/likes
   - Headers:
     - Content-Type: application/json
   - Body:
@@ -885,6 +950,129 @@ Creates and returns a like
 }
 ```
 
+### Create a dislike
+
+Creates and returns a dislike
+
+- Require Authentication: true
+- Require Authorization: false
+
+* Request:
+  - Method: POST
+  - URL: /api/clips/:clipId/dislikes
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+  ```json
+  {
+    "clip_id": 1
+  }
+  ```
+* Successful Response:
+  - Status Code: 201
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+  ```json
+  {
+  	"message": "You have successfully disliked the Clip"
+  }
+  ```
+
+* Error Response:
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "Clip couldn't be found"
+}
+```
+
+### Edit a like
+
+Updates and returns an existing like, turned into a dislike
+
+- Require Authentication: true
+- Require Authorization: like must be created by logged in user
+
+* Request:
+  - Method: PUT
+  - URL: /api/clips/:clipId/likes
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+  ```json
+  {
+    "clip_id": 1
+  }
+  ```
+* Successful Response:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+  ```json
+  {
+  	"message": "You have successfully disliked the Clip"
+  }
+  ```
+
+* Error Response:
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "Clip couldn't be found"
+}
+```
+
+### Edit a dislike
+
+Updates and returns an existing dislike, turned into a like
+
+- Require Authentication: true
+- Require Authorization: dislike must be created by logged in user
+
+* Request:
+  - Method: PUT
+  - URL: /api/clips/:clipId/dislikes
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+  ```json
+  {
+    "clip_id": 1
+  }
+  ```
+* Successful Response:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+  ```json
+  {
+  	"message": "You have successfully liked the Clip"
+  }
+  ```
+
+* Error Response:
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "Clip couldn't be found"
+}
+```
+
 ### Delete a like
 Deletes a like for a Clip
 
@@ -893,7 +1081,7 @@ Deletes a like for a Clip
 
 * Request:
   - Method: DELETE
-  - URL: /api/likes/:clipId
+  - URL: /api/clips/:clipId/likes
   - Headers:
     - Content-Type: application/json
   - Body: None
@@ -919,3 +1107,188 @@ Deletes a like for a Clip
 	"message": "Like couldn't be found"
 }
 ```
+
+### Delete a dislike
+Deletes a like for a Clip
+
+- Require Authentication: true
+- Require Authorization: Deleted dislike must be owned by logged in user
+
+* Request:
+  - Method: DELETE
+  - URL: /api/clips/:clipId/dislikes
+  - Headers:
+    - Content-Type: application/json
+  - Body: None
+
+* Successful Response:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+```json
+{
+	"message": "Successfully Deleted Dislike"
+}
+```
+
+* Error Response:
+  - Status Code: 404
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+```json
+{
+	"message": "Dislike couldn't be found"
+}
+```
+
+## Follows
+
+### Get all followers by user_id
+
+Returns a count of all the followers a user has
+
+- Require Authentication: false
+- Require Authorization: false
+
+* Request:
+  - Method: GET
+  - URL: /api/follows/followers/current
+  - Body: None
+
+* Successful Response:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+  ```json
+  {
+      {
+        "followers": <number of followers>
+      }
+  }
+  ```
+
+### Get all following by user_id
+
+Returns a count of all the users a user follows
+
+- Require Authentication: false
+- Require Authorization: false
+
+* Request:
+  - Method: GET
+  - URL: /api/follows/following/current
+  - Body: None
+
+* Successful Response:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+  ```json
+  {
+      {
+        "followers": <number of following>
+      }
+  }
+  ```
+
+### Create a follow
+
+Creates and returns a follow
+
+- Require Authentication: true
+- Require Authorization: false
+
+* Request:
+  - Method: POST
+  - URL: /api/follows/following/:userId
+  - Body:
+
+  ```json
+  {
+    "following_user_id": 1
+  }
+  ```
+
+* Successful Response:
+  - Status Code: 201
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+  ```json
+  {
+      {
+        "message": "You have successfully followed <user>"
+      }
+  }
+  ```
+
+### Update a follow
+
+Updates and returns an existing follow to a close friend
+
+- Require Authentication: true
+- Require Authorization: follow must be created by logged in user
+
+* Request:
+  - Method: PUT
+  - URL: /api/follows/following/:userId
+  - Body:
+
+  ```json
+  {
+    "following_user_id": 1
+  }
+  ```
+
+* Successful Response:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+  ```json
+  {
+      {
+        "message": "You have successfully added <user> to your close friends list"
+      }
+  }
+  ```
+
+### Delete a follow
+
+Deletes an existing follow
+
+- Require Authentication: true
+- Require Authorization: follow must be created by logged in user
+
+* Request:
+  - Method: DELETE
+  - URL: /api/follows/following/:userId
+  - Body:
+
+  ```json
+  {
+    "following_user_id": 1
+  }
+  ```
+
+* Successful Response:
+  - Status Code: 200
+  - Headers:
+    - Content-Type: application/json
+  - Body:
+
+  ```json
+  {
+      {
+        "message": "You have successfully unfollowed <user>"
+      }
+  }
+  ```

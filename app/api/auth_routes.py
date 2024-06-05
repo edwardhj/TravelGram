@@ -14,7 +14,7 @@ def authenticate():
     """
     if current_user.is_authenticated:
         return current_user.to_dict()
-    return {'errors': {'message': 'Unauthorized'}}, 401
+    return {'message': "No user is logged in"}, 401
 
 
 @auth_routes.route('/login', methods=['POST'])
@@ -31,6 +31,12 @@ def login():
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
         return user.to_dict()
+    if "email" in form.errors:
+        if form.errors["email"][0] == "Email provided not found.":
+            return {"error": "User associated with email not found"}, 401
+    if "password" in form.errors:
+        if form.errors["password"][0] == "Password was incorrect.":
+            return {"error": "Invalid password"}, 401
     return form.errors, 401
 
 
@@ -40,7 +46,7 @@ def logout():
     Logs a user out
     """
     logout_user()
-    return {'message': 'User logged out'}
+    return {'message': 'User has been successfully logged out'}
 
 
 @auth_routes.route('/signup', methods=['POST'])
@@ -49,18 +55,26 @@ def sign_up():
     Creates a new user and logs them in
     """
     form = SignUpForm()
+
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         user = User(
+            first_name=form.data['first_name'],
+            last_name=form.data['last_name'],
             username=form.data['username'],
             email=form.data['email'],
-            password=form.data['password']
+            password=form.data['password'],
+            profile_pic=form.data['profile_pic']
         )
         db.session.add(user)
         db.session.commit()
         login_user(user)
         return user.to_dict()
-    return form.errors, 401
+    # return form.errors, 401
+    if form.errors["email"][0] == "Email address is already in use.":
+       return {"error": "Email already exists", "errors": form.errors}, 500
+    else:
+        return form.errors, 400
 
 
 @auth_routes.route('/unauthorized')
@@ -68,4 +82,4 @@ def unauthorized():
     """
     Returns unauthorized JSON when flask-login authentication fails
     """
-    return {'errors': {'message': 'Unauthorized'}}, 401
+    return {'errors': {'message': 'Forbidden'}}, 403

@@ -308,7 +308,9 @@ Returns all the clips that are public (is not private)
         "location": "Paris",
         "video_file": "aws video link",
         "caption": "Paris in Spring",
-        "created_at": "2024-04-20 18:20:00"
+        "creator": "demolition",
+        "created_at": "2024-04-20 18:20:00",
+        "updated_at": "2024-04-20 18:20:00"
       }
     ]
   }
@@ -330,19 +332,18 @@ Returns all the clips that are created by the current user
   - Body:
 
   ```json
-  {
-  	"Clips": [
-      {
-        "id": 1,
-        "user_id": 1,
-        "location": "Paris",
-        "video_file": "aws video link",
-        "caption": "Paris in Spring",
-        "is_private": false,
-        "created_at": "2024-04-20 18:20:00"
-      }
-    ]
-  }
+  [
+    {
+      "id": 1,
+      "user_id": 1,
+      "location": "Paris",
+      "video_file": "aws video link",
+      "caption": "Paris in Spring",
+      "is_private": false,
+      "created_at": "2024-04-20 18:20:00",
+      "updated_at": "2024-04-20 18:20:00"
+    }
+  ]
   ```
 
 ### Get details of a Clip from a Clip ID
@@ -363,19 +364,19 @@ Returns the details of a clip specified by its id
   - Body:
 
   ```json
+
   {
-  	"Clips": [
-      {
-        "id": 1,
-        "user_id": 1,
-        "location": "Paris",
-        "video_file": "aws video link",
-        "caption": "Paris in Spring",
-        "is_private": false,
-        "created_at": "2024-04-20 18:20:00"
-      }
-    ]
+    "id": 1,
+    "user_id": 1,
+    "location": "Paris",
+    "video_file": "aws video link",
+    "caption": "Paris in Spring",
+    "creator": "Demolition",
+    "is_private": false,
+    "created_at": "2024-04-20 18:20:00",
+    "updated_at": "2024-04-20 18:20:00"
   }
+
   ```
 
 * Error response: Couldn't find a clip with the specified id
@@ -397,7 +398,7 @@ Creates and returns a new clip
 
 - Request
   - Method: POST
-  - URL: /api/clips
+  - URL: /api/clips/new
   - Body:
 
 ```json

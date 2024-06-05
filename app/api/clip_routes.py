@@ -26,7 +26,7 @@ def get_all_clips():
 
 # Get a Clip by clipId
 @clip_routes.route('/<int:clip_id>', methods=['GET', 'PUT', 'DELETE'])
-def get_album_by_id(clip_id):
+def get_clip_by_id(clip_id):
     clip = Clip.query.get(clip_id)
 
     # if there is no clip associated with the clipId
@@ -96,7 +96,7 @@ def get_album_by_id(clip_id):
 
 # Get clips by userId
 @clip_routes.route('users/<int:user_id>')
-def get_album_by_artistId(user_id):
+def get_clip_by_userId(user_id):
     clips = Clip.query.filter(Clip.user_id == user_id).all()
     print(clips)
 
@@ -116,7 +116,7 @@ def get_album_by_artistId(user_id):
 # Get clips by current user
 @clip_routes.route('/current')
 @login_required
-def get_album_by_current_user():
+def get_clip_by_current_user():
 
     clips = Clip.query.filter(Clip.user_id == current_user.id).all()
     clips_arr = []

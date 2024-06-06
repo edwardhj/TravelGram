@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from app.models import Clip, Comment, Like, db
 from sqlalchemy.orm import joinedload
 from sqlalchemy import update, and_, delete
-# from app.api.aws import upload_file_to_s3, get_unique_filename, remove_file_from_s3, create_presigned_url
+from app.api.aws import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 from ..forms import ClipForm, EditClipForm, CommentForm, LikeForm
 
 
@@ -131,26 +131,24 @@ def create_clip():
         caption = form.caption.data
         is_private = form.is_private.data
         video_file = form.file.data
-        # imageUrl = form.imageUrl.data
-        # imageUrl.filename = get_unique_filename(imageUrl.filename)
-        # upload = upload_file_to_s3(imageUrl)
-        # print(upload)
+        video_file.filename = get_unique_filename(video_file.filename)
+        upload = upload_file_to_s3(video_file)
 
-        # if "url" not in upload:
-        # # if the dictionary doesn't have a url key
-        #     return render_template("create_album.html", form=form, errors=[upload])
+        if "url" not in upload:
+        # if the dictionary doesn't have a url key
+            return jsonify({"error": "File upload failed", "details": upload}), 400
 
-        # url = upload["url"]
+
+        url = upload["url"]
 
         new_clip = Clip(location = location,
                         caption = caption,
                         is_private = is_private,
-                        video_file = video_file,
-                        # image_url = url,
+                        video_file = url,
                         user_id = current_user.id)
         db.session.add(new_clip)
         db.session.commit()
-        return jsonify({"message": "Clip successfully created."}), 201
+        return jsonify({"message": "Clip successfully posted."}), 201
 
     print(form.errors)
     errors = {}

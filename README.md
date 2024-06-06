@@ -945,7 +945,7 @@ Returns a count of all the followers a user has
 
 * Request:
   - Method: GET
-  - URL: /api/follows/followers/current
+  - URL: /api/follows/followers/:userId
   - Body: None
 
 * Successful Response:
@@ -1044,16 +1044,16 @@ Creates and returns a follow
 }
 ```
 
-### Update a follower to a close friend
+### Update a user you follow to a close friend
 
-Updates and returns an existing follower to a close friend
+Updates and returns an existing user you follow to a close friend
 
 - Require Authentication: true
-- Require Authorization: follow must be created by logged in user
+- Require Authorization: follow must be created by other user
 
 * Request:
   - Method: PUT
-  - URL: /api/follows/follower/:userId
+  - URL: /api/follows/following/:userId
   - Body:
 
   ```json
@@ -1077,7 +1077,7 @@ Updates and returns an existing follower to a close friend
   }
   ```
 
-* Error Response: User does not follow you
+* Error Response: You do not follow the user
   - Status Code: 400
   - Headers:
     - Content-Type: application/json
@@ -1085,7 +1085,7 @@ Updates and returns an existing follower to a close friend
 
 ```json
 {
-	"message": "The user does not follow you"
+	"message": "You do not follow the user"
 }
 ```
 
@@ -1169,58 +1169,3 @@ Deletes an existing follow
 }
 ```
 
-### Delete a follower
-
-Deletes an existing follower
-
-- Require Authentication: true
-- Require Authorization: follower must be a follower of the logged in user
-
-* Request:
-  - Method: DELETE
-  - URL: /api/follows/follower/:userId
-  - Body:
-
-  ```json
-  {
-    "follower_user_id": 1
-  }
-  ```
-
-* Successful Response:
-  - Status Code: 200
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-
-  ```json
-  {
-      {
-        "message": "<user> has been removed from your follower list"
-      }
-  }
-  ```
-
-* Error Response: User does not exist
-  - Status Code: 400
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-
-```json
-{
-	"message": "User could not be found"
-}
-```
-
-* Error Response: User does not follow you
-  - Status Code: 400
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-
-```json
-{
-	"message": "User does not follow you"
-}
-```

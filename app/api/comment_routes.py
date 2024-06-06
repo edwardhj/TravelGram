@@ -47,7 +47,7 @@ def edit_comment_by_commentId(comment_id):
             comment.body = form.body.data
             
             db.session.commit()
-            return jsonify({"message": "comment has been updated successfully"}), 201
+            return jsonify({"message": "comment has been updated successfully"}), 200
         else:
             error_messages = {}
             for field, errors in form.errors.items():

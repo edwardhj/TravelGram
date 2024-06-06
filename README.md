@@ -374,7 +374,8 @@ Returns the details of a clip specified by its id
     "creator": "Demolition",
     "is_private": false,
     "created_at": "2024-04-20 18:20:00",
-    "updated_at": "2024-04-20 18:20:00"
+    "updated_at": "2024-04-20 18:20:00",
+    "comments": ["array of comments"]
   }
 
   ```
@@ -577,8 +578,7 @@ Returns all the comments that are written by the logged in user
   - Body:
 
   ```json
-  {
-  	"Comments": [
+  [
       {
         "id": 1,
         "user_id": 1,
@@ -586,13 +586,13 @@ Returns all the comments that are written by the logged in user
         "body": "Awesome Video! Didn't know Paris had such a beautiful river",
         "created_at": "2024-04-20 18:20:00"
       }
-    ]
-  }
+  ]
   ```
 
 ### Get all Comments by Clip, specified by Clip id
 
 Returns all the comments that belong to a clip post specified by clip id
+(this will now be retrievable underneath the get a clip by clipId route & the route listed below has been retired)
 
 - Request
   - Method: GET
@@ -661,12 +661,7 @@ Create and return a new comment for a clip, specified by clip id
 
 ```json
 {
-  "id": 2,
-  "user_id": 1,
-  "clip_id": 1,
-  "body": "London is quite beautiful in the summer",
-  "created_at": "2024-04-21 20:20:20",
-  "updated_at": "2024-04-21 20:20:20"
+  "message": "Comment successfully created."
 }
 ```
 
@@ -725,12 +720,7 @@ Update and return an existing comment
 
 ```json
 {
-  "id": 2,
-  "user_id": 1,
-  "clip_id": 1,
-  "body": "London is not beautiful in the winter",
-  "created_at": "2024-04-21 20:20:20",
-  "updated_at": "2024-04-21 22:22:22"
+  "message": "comment has been updated successfully"
 }
 ```
 
@@ -747,19 +737,6 @@ Update and return an existing comment
     "errors": {
       "body": "Comment text is required"
     }
-  }
-  ```
-
-* Error response: Couldn't find a Clip with the specified id
-
-- Status Code: 404
-- Headers:
-- Content-Type: application/json
-- Body:
-
-  ```json
-  {
-    "message": "Clip couldn't be found"
   }
   ```
 
@@ -812,7 +789,7 @@ Returns all clips liked by the logged in user
 
 * Request:
   - Method: GET
-  - URL: /api/clips/:clipId/likes/current
+  - URL: /api/likes/current
   - Headers:
     - Content-Type: application/json
   - Body: None
@@ -867,18 +844,6 @@ Creates and returns a like
   	"message": "You have successfully liked the Clip"
   }
   ```
-
-* Error Response:
-  - Status Code: 404
-  - Headers:
-    - Content-Type: application/json
-  - Body:
-
-```json
-{
-	"message": "Clip couldn't be found"
-}
-```
 
 * Error Response:
   - Status Code: 404

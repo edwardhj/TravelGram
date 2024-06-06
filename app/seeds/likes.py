@@ -7,7 +7,7 @@ def seed_likes():
     likes = [
         {"user_id": 1, "clip_id": 1, "is_like": True},
         {"user_id": 2, "clip_id": 4, "is_like": True},
-        {"user_id": 2, "clip_id": 4, "is_like": True},
+        {"user_id": 1, "clip_id": 4, "is_like": True},
         {"user_id": 1, "clip_id": 2, "is_like": False}
     ]
 

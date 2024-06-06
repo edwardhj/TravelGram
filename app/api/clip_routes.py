@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify, render_template, redirect
 from flask_login import current_user, login_required
-from app.models import Clip, Comment, db
+from app.models import Clip, Comment, Like, db
 from sqlalchemy.orm import joinedload
+from sqlalchemy import update, and_, delete
 # from app.api.aws import upload_file_to_s3, get_unique_filename, remove_file_from_s3, create_presigned_url
-from ..forms import ClipForm, EditClipForm, CommentForm
+from ..forms import ClipForm, EditClipForm, CommentForm, LikeForm
 
 
 clip_routes = Blueprint('clips', __name__)
@@ -65,7 +66,7 @@ def get_clip_by_id(clip_id):
             clip.is_private = form.is_private.data
             
             db.session.commit()
-            return jsonify({"message": "Clip has been updated successfully"}), 201
+            return jsonify({"message": "Clip has been updated successfully"}), 200
         else:
             error_messages = {}
             for field, errors in form.errors.items():
@@ -201,3 +202,123 @@ def create_comment(clip_id):
     return jsonify(error_response), 400
 
 
+# Create a like for a Clip based on clipId, update a like to dislike, delete a like
+@clip_routes.route('/<int:clip_id>/likes', methods=['POST'])
+@login_required
+def create_like(clip_id):
+
+    clip = Clip.query.get(clip_id)
+
+    if not clip:
+        response = jsonify({"error": "Clip couldn't be found"})
+        response.status_code = 404
+        return response
+    
+    existing_like = db.session.query(Like).filter(
+    Like.c.user_id == current_user.id, 
+    Like.c.clip_id == clip_id
+    ).first()
+
+    if request.method == 'POST':
+        if existing_like:
+            if current_user.is_authenticated and existing_like.user_id == current_user.id:
+                pass
+            else:
+                return jsonify({"error": "Unauthorized access"}), 403
+            
+            if existing_like.is_like == False:
+                update_stmt = (
+                    update(Like)
+                    .where(and_(Like.c.user_id == current_user.id, Like.c.clip_id == clip.id))
+                    .values(is_like=not existing_like.is_like)
+                )
+                db.session.execute(update_stmt)
+                db.session.commit()
+                return jsonify({"message": "You have successfully updated the like/dislike."}), 200
+            
+            if existing_like.is_like == True:
+                deleted_like_sql = delete(Like).where(
+                Like.c.user_id == current_user.id,
+                Like.c.clip_id == clip_id
+                )
+                db.session.execute(deleted_like_sql)
+                db.session.commit()
+                return jsonify({"message": "Successfully Deleted Like"}), 200
+
+        else:
+            # Create new like/dislike
+            create_like = {"user_id": current_user.id, "clip_id": clip_id, "is_like": True}
+            db.session.execute(Like.insert(), create_like)
+            db.session.commit()
+            return jsonify({"message": "You have successfully liked the clip."}), 201
+    
+    # if request.method == "PUT":
+    #     existing_like = db.session.query(Like).filter(
+    #         Like.c.user_id == current_user.id,
+    #         Like.c.clip_id == clip_id
+    #     ).first()
+
+    #     if existing_like:
+    #         update_stmt = (
+    #             update(Like)
+    #             .where(and_(Like.c.user_id == current_user.id, Like.c.clip_id == clip.id))
+    #             .values(is_like=not existing_like.is_like)
+    #         )
+
+    #         db.session.execute(update_stmt)
+    #         db.session.commit()
+    #         return jsonify({"message": "You have successfully updated the like/dislike."}), 200
+
+    #     else:
+    #         return jsonify({"error": "Like/Dislike not found"}), 404
+        
+
+# Create a dislike for a Clip based on clipId, update a dislike to like, delete a dislike
+@clip_routes.route('/<int:clip_id>/dislikes', methods=['POST'])
+@login_required
+def create_dislike(clip_id):
+
+    clip = Clip.query.get(clip_id)
+
+    if not clip:
+        response = jsonify({"error": "Clip couldn't be found"})
+        response.status_code = 404
+        return response
+    
+    existing_like = db.session.query(Like).filter(
+    Like.c.user_id == current_user.id, 
+    Like.c.clip_id == clip_id
+    ).first()
+
+    if request.method == 'POST' or 'DELETE':
+        if existing_like:
+            if current_user.is_authenticated and existing_like.user_id == current_user.id:
+                pass
+            else:
+                return jsonify({"error": "Unauthorized access"}), 403
+            
+            if existing_like.is_like == True:
+                update_stmt = (
+                    update(Like)
+                    .where(and_(Like.c.user_id == current_user.id, Like.c.clip_id == clip.id))
+                    .values(is_like=not existing_like.is_like)
+                )
+                db.session.execute(update_stmt)
+                db.session.commit()
+                return jsonify({"message": "You have successfully updated the like/dislike."}), 200
+        
+            if existing_like.is_like == False:
+                deleted_like_sql = delete(Like).where(
+                Like.c.user_id == current_user.id,
+                Like.c.clip_id == clip_id
+                )
+                db.session.execute(deleted_like_sql)
+                db.session.commit()
+                return jsonify({"message": "Successfully Deleted Dislike"}), 200
+        
+        else:
+            # Create new like/dislike
+            create_dislike = {"user_id": current_user.id, "clip_id": clip_id, "is_like": False}
+            db.session.execute(Like.insert(), create_dislike)
+            db.session.commit()
+            return jsonify({"message": "You have successfully disliked the clip."}), 201

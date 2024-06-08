@@ -80,7 +80,7 @@ def get_clip_by_id(clip_id):
             return response
 
     if request.method == 'DELETE':
-        # remove_file_from_s3(album.image_url)
+        remove_file_from_s3(clip.video_file)
         db.session.delete(clip)
         db.session.commit()
         return jsonify({"message": "Successfully Deleted"})

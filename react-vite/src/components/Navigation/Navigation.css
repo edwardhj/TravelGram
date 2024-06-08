@@ -1,3 +1,60 @@
-.profile-dropdown {
-  position: absolute;
+.navigation-outer {
+  background-color: #ffffff;
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.navigation-header {
+  margin: 0;
+}
+
+.navigation-heading {
+  margin: 0;
+  font-size: 48px;
+  color: #262626;
+  font-family: "Covered By Your Grace", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.navigation-list {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.navigation-link {
+  text-decoration: none;
+}
+
+.navigation-list li {
+  margin-right: 20px;
+}
+
+.navigation-element {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #262626;
+}
+
+.navigation-element img {
+  width: 24px;
+  height: 24px;
+}
+
+.nav-logo-headers {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Hover Styling */
+
+.navigation-element:hover img {
+  transform: scale(1.05);
 }

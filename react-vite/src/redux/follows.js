@@ -1,3 +1,5 @@
+import { csrfFetch } from "./csrf";
+
 const GET_FOLLOWS_BY_USER = 'follows/getfollows'
 const GET_FOLLOWING_BY_USER = 'follows/getfollowing'
 const ADD_FOLLOW = 'follows/addFollow'

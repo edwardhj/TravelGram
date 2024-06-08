@@ -1,3 +1,5 @@
+import { csrfFetch } from "./csrf";
+
 const GET_COMMENTS_BY_USER = 'comments/getCommentsByUser'
 const ADD_COMMENT = 'comments/addComment'
 const UPDATE_COMMENT = 'comments/updateComment'

@@ -1,4 +1,4 @@
-# TravelTok
+# TravelGram
 
 ## Database Schema Design
 
@@ -6,9 +6,9 @@
 
 [db-schema]: ./database_schema.png
 
-## TravelTok API Documentation
+## TravelGram API Documentation
 
-Listed below are all the endpoints of the backend for TravelTok
+Listed below are all the endpoints of the backend for TravelGram
 
 ## User Authentication/Authorization
 

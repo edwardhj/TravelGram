@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, render_template, redirect
 from flask_login import current_user, login_required
 from app.models import Clip, Comment, Like, db
 from sqlalchemy.orm import joinedload
-from sqlalchemy import update, and_, delete
+from sqlalchemy import update, and_, delete, select
 from app.api.aws import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 from ..forms import ClipForm, EditClipForm, CommentForm, LikeForm
 
@@ -28,8 +28,17 @@ def get_all_clips():
 # Get a Clip by clipId
 @clip_routes.route('/<int:clip_id>', methods=['GET', 'PUT', 'DELETE'])
 def get_clip_by_id(clip_id):
-    clip = Clip.query.options(joinedload(Clip.comments_on_clip)).filter_by(id=clip_id).first()
-
+    clip = (
+        Clip.query
+        .options(joinedload(Clip.comments_on_clip))
+        .filter_by(id=clip_id)
+        .first()
+    )
+    query_likes = select([Like]).where(Like.c.clip_id == clip.id, Like.c.is_like == True)
+    query_dislikes = select([Like]).where(Like.c.clip_id == clip.id, Like.c.is_like == False)
+    num_likes = db.session.execute(query_likes).scalar() or 0
+    num_dislikes = db.session.execute(query_dislikes).scalar() or 0
+    
 
     # if there is no clip associated with the clipId
     if not clip:
@@ -47,6 +56,8 @@ def get_clip_by_id(clip_id):
             return response, 403
 
         clip_data['comments'] = [comment.to_dict() for comment in clip.comments_on_clip]
+        clip_data['num_likes'] = num_likes
+        clip_data['dislikes_count'] = num_dislikes
 
         return clip_data
 

@@ -8,11 +8,13 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import clipsReducer from "./clips";
 import commentsReducer from "./comments";
+import followsReducer from "./follows";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   clips: clipsReducer,
   comments: commentsReducer,
+  follows: followsReducer,
 });
 
 let enhancer;

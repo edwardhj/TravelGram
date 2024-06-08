@@ -172,7 +172,7 @@ export const deleteClip = (clipId) => async dispatch => {
 
 const initialState = {};
 
-const clipsReducer = (initialState, action) => {
+const clipsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_CLIPS:
           return { ...state, allClips: action.allClips }

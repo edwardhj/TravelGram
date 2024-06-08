@@ -44,133 +44,137 @@ const removeClip = (clipId) => ({
 });
 
 export const fetchAllClips = () => async dispatch => {
-    const response = await csrfFetch('/api/clips');
-    const clips = await response.json();
-    if (response.ok){
-        dispatch(getClips(clips));
-        return clips;
-    }
-    else if (response.status < 500) {
-        const errorMessages = await response.json();
-        return errorMessages;
-    } 
-    else {
+    try {
+        const response = await csrfFetch('/api/clips');
+        const clips = await response.json();
+        if (response.ok) {
+            dispatch(getClips(clips));
+            return clips;
+        } else {
+            const errorMessages = await response.json();
+            return errorMessages;
+        }
+    } catch (error) {
         return { server: "Something went wrong. Please try again" };
-    };
+    }
 };
 
 export const fetchOneClip = (clipId) => async dispatch => {
-    const response = await csrfFetch(`/api/clips/${clipId}`);
-    const clip = await response.json();
+    try {
+        const response = await csrfFetch(`/api/clips/${clipId}`);
+        const clip = await response.json();
 
-    if (response.ok){
-        dispatch(getClipDetails(clip));
-        return clip;
-    }  
-    else if (response.status < 500) {
-        const errorMessages = await response.json();
-        return errorMessages;
-    } 
-    else {
+        if (response.ok) {
+            dispatch(getClipDetails(clip));
+            return clip;
+        } else {
+            const errorMessages = await response.json();
+            return errorMessages;
+        }
+    } catch (error) {
         return { server: "Something went wrong. Please try again" };
-    };
+    }
 };
 
 export const fetchClipsByUser = (userId) => async dispatch => {
-    const response = await csrfFetch(`/api/clips/users/${userId}`);
-    const clips = await response.json();
+    try {
+        const response = await csrfFetch(`/api/clips/users/${userId}`);
+        const clips = await response.json();
 
-    if (response.ok){
-        dispatch(getClipsByUser(clips));
-        return clips;
-    } 
-    else if (response.status < 500) {
-        const errorMessages = await response.json();
-        return errorMessages;
-    } 
-    else {
+        if (response.ok) {
+            dispatch(getClipsByUser(clips));
+            return clips;
+        } else {
+            const errorMessages = await response.json();
+            return errorMessages;
+        }
+    } catch (error) {
         return { server: "Something went wrong. Please try again" };
-    };
+    }
 };
 
 export const fetchClipsByCurrentUser = () => async dispatch => {
-    const response = await csrfFetch(`/api/clips/current`);
-    const clips = await response.json();
+    try {
+        const response = await csrfFetch(`/api/clips/current`);
+        const clips = await response.json();
 
-    if (response.ok){
-        dispatch(getClipsByCurrentUser(clips));
-        return clips;
-    } 
-    else if (response.status < 500) {
-        const errorMessages = await response.json();
-        return errorMessages;
-    } 
-    else {
+        if (response.ok) {
+            dispatch(getClipsByCurrentUser(clips));
+            return clips;
+        } else {
+            const errorMessages = await response.json();
+            return errorMessages;
+        }
+    } catch (error) {
         return { server: "Something went wrong. Please try again" };
-    };
+    }
 };
 
 export const postClip = (clipData) => async dispatch => {
-    const response = await csrfFetch('/api/clips/new', {
-        method: 'POST',
-        body: JSON.stringify(clipData)
-    });
-    const newClip = await response.json();
+    try {
+        const response = await csrfFetch('/api/clips/new', {
+            method: 'POST',
+            body: JSON.stringify(clipData)
+        });
+        const newClip = await response.json();
 
-    if (response.ok) {
-        dispatch(createClip(newClip));
-        return newClip;
-    }
-    else if (response.status < 500) {
-        const errorMessages = await response.json();
-        return errorMessages;
-    } 
-    else {
+        if (response.ok) {
+            dispatch(createClip(newClip));
+            return newClip;
+        } else {
+            const errorMessages = await response.json();
+            return errorMessages;
+        }
+    } catch (error) {
         return { server: "Something went wrong. Please try again" };
-    };
+    }
 };
 
 export const updateClip = (clipData) => async dispatch => {
-    const response = await csrfFetch(`/api/clips/${clipData.id}`, {
-        method: 'PUT',
-        body: JSON.stringify(clipData)
-    });
-    const updatedClip = await response.json();
+    try {
+        const response = await csrfFetch(`/api/clips/${clipData.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(clipData)
+        });
+        const updatedClip = await response.json();
 
-    if (response.ok){
-        dispatch(modifyClip(updatedClip));
-        return updatedClip;
-    }
-    else if (response.status < 500) {
-        const errorMessages = await response.json();
-        return errorMessages;
-    } 
-    else {
+        if (response.ok) {
+            dispatch(modifyClip(updatedClip));
+            return updatedClip;
+        } else {
+            const errorMessages = await response.json();
+            return errorMessages;
+        }
+    } catch (error) {
         return { server: "Something went wrong. Please try again" };
-    };
+    }
 };
 
 export const deleteClip = (clipId) => async dispatch => {
-    const response = await csrfFetch(`/api/clips/${clipId}`, {
-        method: 'DELETE'
-    });
+    try {
+        const response = await csrfFetch(`/api/clips/${clipId}`, {
+            method: 'DELETE'
+        });
 
-    if (response.ok) {
-        dispatch(removeClip(clipId));
-        return response;
-    }
-    else if (response.status < 500) {
-        const errorMessages = await response.json();
-        return errorMessages;
-    } 
-    else {
+        if (response.ok) {
+            dispatch(removeClip(clipId));
+            return response;
+        } else {
+            const errorMessages = await response.json();
+            return errorMessages;
+        }
+    } catch (error) {
         return { server: "Something went wrong. Please try again" };
-    };
+    }
 };
 
 
-
-const initialState = {};
+const initialState = {
+    allClips: {},
+    clipDetails: {},
+    clipsByUser: {},
+    clipsByCurrentUser: {}
+};
 
 const clipsReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -183,13 +187,14 @@ const clipsReducer = (state = initialState, action) => {
         case LOAD_CLIPS_BY_CURRENT_USER:
           return { ...state, clipsByCurrentUser: action.personalClips }
         case CREATE_CLIP:
-          return { ...state, clipsByCurrentUser: {...state.clipsByCurrentUser, [action.newClip.id]: newClip } }
+          return { ...state, clipsByCurrentUser: {...state.clipsByCurrentUser, [action.newClip.id]: action.newClip } }
         case UPDATE_CLIP:
           return { ...state, clipDetails: action.updatedClip }
         case DELETE_CLIP: {             
             const newState = { ...state };
-            newState.allClips = newState.allClips.filter(clip => clip.id !== action.clipId);
-            newState.clipDetails = {};
+            newState.allClips = Object.fromEntries(
+                Object.entries(newState.allClips).filter(([id]) => id !== action.clipId)
+            );
             return newState;
         }
         default:

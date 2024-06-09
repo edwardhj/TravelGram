@@ -19,20 +19,20 @@ function Navigation() {
   //   return navigate('/users')
   // }
 
-  const handleSignOut = (e) => {
+  const handleSignOut = async (e) => {
     e.preventDefault();
-    dispatch(thunkLogout());  // Dispatch the logout action
-    navigate('/');  // Redirect to home page
+    await dispatch(thunkLogout());  // Dispatch the logout action
+    navigate('/login');  // Redirect to login page
   };
 
-  const handleDemoLogin = (e) => {
+  const handleDemoLogin = async (e) => {
     e.preventDefault();
     const demoUser = {
       email: 'demo@email.com',
       password: 'password'
     }
 
-    dispatch(thunkLogin(demoUser)).then(() => {
+    await dispatch(thunkLogin(demoUser)).then(() => {
       navigate('/');
     })
   };

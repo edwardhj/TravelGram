@@ -1,0 +1,73 @@
+.login-outer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fafafa;
+}
+  
+.login-image {
+    margin-right: 50px;
+}
+  
+#gramLogo {
+    width: 350px;
+    height: auto;
+}
+  
+.login-form {
+    width: 350px;
+    padding: 40px;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+  
+.login-form h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #262626;
+}
+  
+.login-label {
+    display: block;
+    text-align: left;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #8e8e8e;
+}
+  
+.login-label input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    background-color: #fafafa;
+    font-size: 1rem;
+}
+  
+.login-label p {
+    color: red;
+    font-size: 0.875rem;
+    margin: 5px 0 0;
+}
+  
+.login-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #0095f6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+  
+.login-button:hover {
+    background-color: #007bb5;
+}

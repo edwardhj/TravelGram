@@ -1,7 +1,13 @@
 /* TODO: Add sitewide styles */
 body {
-    font-family: "Patrick Hand SC", cursive;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
+  font-family: "Patrick Hand SC", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}

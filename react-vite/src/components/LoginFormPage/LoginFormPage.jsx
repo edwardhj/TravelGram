@@ -33,34 +33,46 @@ function LoginFormPage() {
 
   return (
     <>
-      <h1>Log In</h1>
-      {errors.length > 0 &&
-        errors.map((message) => <p key={message}>{message}</p>)}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
-      </form>
+      <div className="login-outer">
+
+        <div className="login-image">
+          <img id="gramLogo" src="icon_login.png" alt={'TravelGram Landing Image'} />
+        </div>
+
+        <div className="login-form">
+          <h1>Login to TravelGram</h1>
+
+          <form onSubmit={handleSubmit}>
+            <label className="login-label">
+            Email
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            </label>
+              {errors.email && <p className="error-message">{errors.email}</p>}
+              {console.log(errors)}
+            <label className="login-label">
+              Password
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </label>
+              {errors.password && <p className="error-message">{errors.password}</p>}
+
+            <button type="submit" className="login-button">Log In</button>
+          </form>
+
+        </div>
+
+      </div>
     </>
-  );
+  )
 }
 
 export default LoginFormPage;

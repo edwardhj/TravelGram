@@ -1,8 +1,9 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
+from app.api.aws import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 
 auth_routes = Blueprint('auth', __name__)
 
@@ -31,13 +32,13 @@ def login():
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
         return user.to_dict()
-    if "email" in form.errors:
-        if form.errors["email"][0] == "Email provided not found.":
-            return {"error": "User associated with email not found"}, 401
-    if "password" in form.errors:
-        if form.errors["password"][0] == "Password was incorrect.":
-            return {"error": "Invalid password"}, 401
-    return form.errors, 401
+    # if "email" in form.errors:
+    #     if form.errors["email"][0] == "Email provided not found.":
+    #         return jsonify({"error": "User associated with email not found"}), 401
+    # if "password" in form.errors:
+    #     if form.errors["password"][0] == "Password was incorrect.":
+    #         return jsonify({"error": "Invalid password"}), 401
+    return jsonify(form.errors), 401
 
 
 @auth_routes.route('/logout')
@@ -58,23 +59,42 @@ def sign_up():
 
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
+        first_name = form.data['first_name']
+        last_name = form.data['last_name']
+        username = form.data['username']
+        email = form.data['email']
+        password = form.data['password']
+        profile_pic = form.data['profile_pic']
+
+        if profile_pic:
+            profile_pic.filename = get_unique_filename(profile_pic.filename)
+            upload = upload_file_to_s3(profile_pic)
+
+            if "url" not in upload:
+            # if the dictionary doesn't have a url key
+                return jsonify({"error": "File upload failed", "details": upload}), 400
+            
+            url = upload["url"]
+        else:
+            url = None
+
         user = User(
-            first_name=form.data['first_name'],
-            last_name=form.data['last_name'],
-            username=form.data['username'],
-            email=form.data['email'],
-            password=form.data['password'],
-            profile_pic=form.data['profile_pic']
+            first_name=first_name,
+            last_name=last_name,
+            username=username,
+            email=email,
+            password=password,
+            profile_pic=url
         )
         db.session.add(user)
         db.session.commit()
         login_user(user)
         return user.to_dict()
     # return form.errors, 401
-    if form.errors["email"][0] == "Email address is already in use.":
-       return {"error": "Email already exists", "errors": form.errors}, 500
+    # if form.errors["email"][0] == "Email address is already in use.":
+    #    return {"error": "Email already exists", "errors": form.errors}, 500
     else:
-        return form.errors, 400
+        return jsonify(form.errors), 400
 
 
 @auth_routes.route('/unauthorized')

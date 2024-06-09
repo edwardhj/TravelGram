@@ -1,22 +1,41 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { thunkLogout, thunkLogin } from "../../redux/session";
 
-function Navigation({ isLoaded }) {
+function Navigation() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  function NavigateHome(){
-    return navigate('/')
-  }
+  // function NavigateHome(){
+  //   return navigate('/')
+  // }
 
-  function NavigateToProfile() {
-    return navigate('/clips/current')
-  }
+  // function NavigateToProfile() {
+  //   return navigate('/clips/current')
+  // }
 
-  function NavigateToExplore() {
-    return navigate('/users')
-  }
+  // function NavigateToExplore() {
+  //   return navigate('/users')
+  // }
+
+  const handleSignOut = (e) => {
+    e.preventDefault();
+    dispatch(thunkLogout());  // Dispatch the logout action
+    navigate('/');  // Redirect to home page
+  };
+
+  const handleDemoLogin = (e) => {
+    e.preventDefault();
+    const demoUser = {
+      email: 'demo@email.com',
+      password: 'password'
+    }
+
+    dispatch(thunkLogin(demoUser)).then(() => {
+      navigate('/');
+    })
+  };
 
   const sessionUser = useSelector(state => state.session.user)
 
@@ -70,6 +89,15 @@ function Navigation({ isLoaded }) {
               </NavLink>
             </li>
 
+            <li>
+              <NavLink className="navigation-link" to='/signout' onClick={handleSignOut}>
+                <div className="navigation-element">
+                  <img className="nav-logo" src="icon_signout.png" alt="Sign Out" />
+                  <h4 className="nav-logo-headers">Sign Out</h4>
+                </div>
+              </NavLink>
+            </li>
+
           </>
         ) : (
           <>
@@ -88,6 +116,15 @@ function Navigation({ isLoaded }) {
                 <div className="navigation-element">
                   <img className="nav-logo" src="icon_profile.png" alt="Login" />
                   <h4 className="nav-logo-headers">Login</h4>
+                </div>
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink className="navigation-link" to='/demouser' onClick={handleDemoLogin}>
+                <div className="navigation-element">
+                  <img className="nav-logo" src="icon_demo.png" alt="Sign Out" />
+                  <h4 className="nav-logo-headers">Demo User</h4>
                 </div>
               </NavLink>
             </li>

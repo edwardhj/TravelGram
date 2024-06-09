@@ -1,0 +1,26 @@
+.login-label input[type="file"] {
+    display: none; /* Hide the default file input */
+  }
+  
+  .upload-button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .upload-button:hover {
+    background-color: #45a049;
+  }
+
+  .profile-pic-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .uploaded-filename {
+    color: green !important;
+}

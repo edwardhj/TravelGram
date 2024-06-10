@@ -50,26 +50,26 @@ function Navigation() {
 
       <ul className="navigation-list">
 
-        <li>
-          <NavLink className="navigation-link" to='/'>
-            <div className="navigation-element">
-              <img className='nav-logo' src="icon_home.png" />
-              <h4 className="nav-logo-headers">Home</h4>
-            </div>
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink className="navigation-link" to='/connect'>
-            <div className="navigation-element">
-              <img className="nav-logo" src="icon_explore.png" />
-              <h4 className="nav-logo-headers">Connect</h4>
-            </div>
-          </NavLink>
-        </li>
-
         {sessionUser ? (
           <>
+
+            <li>
+              <NavLink className="navigation-link" to='/'>
+                <div className="navigation-element">
+                  <img className='nav-logo' src="icon_home.png" />
+                  <h4 className="nav-logo-headers">Home</h4>
+                </div>
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink className="navigation-link" to='/connect'>
+                <div className="navigation-element">
+                  <img className="nav-logo" src="icon_explore.png" />
+                  <h4 className="nav-logo-headers">Connect</h4>
+                </div>
+              </NavLink>
+            </li>
 
             <li>
               <NavLink className="navigation-link" to='/create'>

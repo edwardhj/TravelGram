@@ -13,7 +13,7 @@ function ClipComment({ comment, currentUser }) {
     const [editedComment, setEditedComment] = useState(comment.body);
 
     const handleDelete = async () => {
-        await dispatch(deleteComment(comment.id));
+        await dispatch(deleteComment(comment));
     };
 
     const handleEditToggle = () => {

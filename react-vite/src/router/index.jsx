@@ -3,6 +3,8 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import HomePage from '../components/HomePage/HomePage';
+import ProfilePage from '../components/ProfilePage/ProfilePage';
+import ClipDetail from '../components/ClipDetail/ClipDetail';
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ export const router = createBrowserRouter([
         path: "/signup",
         element: <SignupFormPage />,
       },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
+      },
+      {
+        path: "/clips/:clipId",
+        element: <ClipDetail />
+      }
     ],
   },
 ]);

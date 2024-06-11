@@ -10,7 +10,6 @@ def seed_users():
         email='demo@email.com', 
         username='Demo', 
         password='password',
-        profile_pic='placeholder_aws_value',
         is_admin=False)
     Edward = User(
         first_name="Edward", 
@@ -18,7 +17,7 @@ def seed_users():
         email='edward@gmail.com', 
         username='edwardhj', 
         password='password',
-        profile_pic='placeholder_aws_value',
+        profile_pic='https://traveltok.s3.us-east-2.amazonaws.com/pp1.jpeg',
         is_admin=True)
     Nathan = User(
         first_name="Nate", 
@@ -26,7 +25,7 @@ def seed_users():
         email='natty@gmail.com', 
         username='natedawg', 
         password='password',
-        profile_pic='placeholder_aws_value',
+        profile_pic='https://traveltok.s3.us-east-2.amazonaws.com/pp2.jpeg',
         is_admin=False)
 
     db.session.add(demo)

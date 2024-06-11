@@ -49,7 +49,6 @@ function Navigation() {
       </div>
 
       <ul className="navigation-list">
-
         {sessionUser ? (
           <>
 
@@ -133,7 +132,6 @@ function Navigation() {
         )}
 
       </ul>
-      
     </div>
   );
 }

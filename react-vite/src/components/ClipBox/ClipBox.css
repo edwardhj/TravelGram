@@ -1,0 +1,15 @@
+.clips-preview-box {
+    width: calc(33.333% - 20px);
+    cursor: pointer;
+    position: relative;
+}
+
+.clips-preview-box:hover {
+    opacity: 0.8;
+}
+
+.clips-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

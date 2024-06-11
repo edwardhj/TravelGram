@@ -66,7 +66,6 @@ function SignupFormPage() {
         </div>
 
         <div className="login-form">
-
           <h1>Sign Up for TravelGram</h1>
           <form onSubmit={handleSubmit}>
 
@@ -154,6 +153,7 @@ function SignupFormPage() {
             <button type="submit" className="login-button">Sign Up</button>
           </form>
         </div>
+
       </div>
     </>
   );

@@ -113,7 +113,7 @@ def get_clip_by_userId(user_id):
     for clip in clips:
         clip_data = clip.to_dict()
         response['clips'].append(clip_data)
-    return response
+    return jsonify(response)
 
 
 # Get clips by current user
@@ -127,7 +127,7 @@ def get_clip_by_current_user():
     for clip in clips:
         clip_data = clip.to_dict()
         clips_arr.append(clip_data)
-    return clips_arr
+    return jsonify(clips_arr)
 
 # Create a clip
 @clip_routes.route('/new', methods=['GET', 'POST'])

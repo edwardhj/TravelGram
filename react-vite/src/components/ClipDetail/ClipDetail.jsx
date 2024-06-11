@@ -1,14 +1,9 @@
-import { useNavigate } from "react-router-dom";
+
 
 function ClipDetail({ clip }) {
-    const navigate = useNavigate();
-
-    const handleClick = () => {
-        navigate(`/clips/${clip.id}`);
-    };
 
     return (
-        <div className='clips-preview-box' onClick={handleClick}>
+        <div className='clips-preview-box'>
             <img 
             className="clips-preview-image" 
             alt={clip.location} 

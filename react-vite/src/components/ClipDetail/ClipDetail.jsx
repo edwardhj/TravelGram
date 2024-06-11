@@ -99,7 +99,7 @@ function ClipDetail() {
 
                 <div className="detail-others">
                     <div className="detail-user">
-                        <h2>{currentClip.location} ({currentClip.creator})</h2>
+                        <h2>{currentClip.location}</h2>
                         {currentClip.user_id == currentUser.id && (
                         <div className="detail-buttons">
                             <ClipEditButton clip={currentClip} />
@@ -109,6 +109,12 @@ function ClipDetail() {
 
                         
                         <hr className="user-comment-divider" />
+                    </div>
+
+                    <div className="detail-caption">
+                        {currentClip.caption && 
+                        <h4 id="detail-caption-body"><strong>{currentClip.creator}:</strong> {currentClip.caption}</h4>
+                        }
                     </div>
 
                     <div className="detail-comments">

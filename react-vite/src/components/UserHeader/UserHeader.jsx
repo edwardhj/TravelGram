@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { thunkAuthenticate } from "../../redux/session";
+import defaultprofile from '../../assets/images/icon_default_user.png';
 import './UserHeader.css'
 
 
@@ -22,7 +23,7 @@ function UserHeader({ user, clipCount }) {
                     { user.profile_pic ? (
                         <img id="profile-picture" src={user.profile_pic} alt="Profile Picture" />
                     ) : (
-                        <img id="profile-picture" src="icon_demo_user.png" alt="Default Profile Picture" />
+                        <img id="profile-picture" src={defaultprofile} alt="Default Profile Picture" />
                     )}
                 </div>
 

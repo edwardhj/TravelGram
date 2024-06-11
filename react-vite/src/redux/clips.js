@@ -114,7 +114,7 @@ export const postClip = (clipData) => async dispatch => {
     try {
         const response = await csrfFetch('/api/clips/new', {
             method: 'POST',
-            body: JSON.stringify(clipData)
+            body: clipData
         });
         const newClip = await response.json();
 

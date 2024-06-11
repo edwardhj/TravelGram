@@ -150,18 +150,10 @@ def create_clip():
                         user_id = current_user.id)
         db.session.add(new_clip)
         db.session.commit()
-        return jsonify({"message": "Clip successfully posted."}), 201
+        return jsonify({"message": "Clip successfully posted.", "clipId": new_clip.id}), 201
 
-    print(form.errors)
-    errors = {}
-    for field, error in form.errors.items():
-        field_obj = getattr(form, field)
-        errors[field_obj.label.text] = error[0]
-    error_response = {
-        "message": "Body validation errors",
-        "error": errors
-    }
-    return jsonify(error_response), 400
+    print(form.errors, 'HEYOSDJFL:SDFJS:LKFSD:FJSDKFL')
+    return jsonify(form.errors), 400
 
 
 # Create a comment for a Clip based on clipId

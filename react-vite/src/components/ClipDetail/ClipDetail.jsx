@@ -106,8 +106,6 @@ function ClipDetail() {
                             <ClipDelete clipId={currentClip.id} />
                         </div>
                         )}
-
-                        
                         <hr className="user-comment-divider" />
                     </div>
 

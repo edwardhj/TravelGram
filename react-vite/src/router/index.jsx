@@ -6,6 +6,7 @@ import HomePage from '../components/HomePage/HomePage';
 import ProfilePage from '../components/ProfilePage/ProfilePage';
 import ClipDetail from '../components/ClipDetail/ClipDetail';
 import ClipEditPage from '../components/ClipEditPage/ClipEditPage';
+import ClipCreate from '../components/ClipCreate/ClipCreate';
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: "/clips/:clipId/edit",
         element: <ClipEditPage />
+      },
+      {
+        path: "/create",
+        element: <ClipCreate />
       }
     ],
   },

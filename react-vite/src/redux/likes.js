@@ -1,22 +1,68 @@
 import { csrfFetch } from "./csrf";
 import { getClipDetails } from "./clips";
 
+const LOAD_LIKED_CLIPS = 'likes/LOAD_LIKED_CLIPS';
+const LOAD_DISLIKED_CLIPS = 'likes/LOAD_DISLIKED_CLIPS';
+export const LIKE_CLIP = 'likes/LIKE_CLIP';
+export const DELETE_LIKE = 'likes/DELETE_LIKE';
+export const DISLIKE_CLIP = 'likes/DISLIKE_CLIP';
 
-export const LIKE_CLIP = 'LIKE_CLIP';
-export const DELETE_LIKE = 'DELETE_LIKE';
-export const DISLIKE_CLIP = 'DISLIKE_CLIP';
 
-export const likeClip = (clipId) => ({
+const loadLikedClips = likedClips => ({
+    type: LOAD_LIKED_CLIPS,
+    likedClips
+});
+
+const loadDislikedClips = dislikedClips => ({
+    type: LOAD_DISLIKED_CLIPS,
+    dislikedClips
+});
+
+const likeClip = (clipId) => ({
     type: LIKE_CLIP,
     clipId
-  });
+});
   
-  export const dislikeClip = (clipId) => ({
+const dislikeClip = (clipId) => ({
     type: DISLIKE_CLIP,
     clipId
-  });
+});
 
-  export const createLike = (clipId) => async (dispatch) => {
+
+export const fetchLikedClips = () => async dispatch => {
+    try {
+        const response = await csrfFetch('/api/likes/likes');
+        const clips = await response.json();
+
+        if (response.ok) {
+            dispatch(loadLikedClips(clips));
+        } else {
+            const errorMessages = await response.json();
+            return errorMessages;
+        }
+    } catch (error) {
+        return { server: "Something went wrong. Please try again" };
+    }
+};
+
+export const fetchDislikedClips = () => async dispatch => {
+    try {
+        const response = await csrfFetch('/api/likes/dislikes');
+        const clips = await response.json();
+
+        if (response.ok) {
+            dispatch(loadDislikedClips(clips)); // Dispatching action to store disliked clips
+            return clips;
+        } else {
+            const errorMessages = await response.json();
+            return errorMessages;
+        }
+    } catch (error) {
+        return { server: "Something went wrong. Please try again" };
+    }
+};
+
+export const createLike = (clipId) => async (dispatch) => {
     const response = await csrfFetch(`/api/clips/${clipId}/likes`, {
         method: 'POST'
     });
@@ -25,7 +71,7 @@ export const likeClip = (clipId) => ({
         const res2 = await csrfFetch(`/api/clips/${clipId}`);
         const clip = await res2.json();
         if (res2.ok) dispatch(getClipDetails(clip));
-        dispatch(likeClip(clipId)); // Dispatch the action after updating likes
+        dispatch(likeClip(clipId));
     }
 };
 
@@ -38,22 +84,22 @@ export const createDislike = (clipId) => async (dispatch) => {
         const res2 = await csrfFetch(`/api/clips/${clipId}`);
         const clip = await res2.json();
         if (res2.ok) dispatch(getClipDetails(clip));
-        dispatch(dislikeClip(clipId)); // Dispatch the action after updating dislikes
+        dispatch(dislikeClip(clipId));
     }
 };
 
 
 const initialState = {
-    likes: 0,
-    dislikes: 0
+    likedClips: [],
+    dislikedClips: []
   };
 
   const likesReducer = (state = initialState, action) => {
     switch (action.type) {
-        case LIKE_CLIP:
-            return {...state, likes: state.likes + 1}
-        case DISLIKE_CLIP:
-            return {...state, dislikes: state.dislikes + 1}
+        case LOAD_LIKED_CLIPS:
+            return {...state, likedClips: action.likedClips}
+        case LOAD_DISLIKED_CLIPS:
+            return {...state, dislikedClips: action.dislikedClips}
         default:
             return state
     }

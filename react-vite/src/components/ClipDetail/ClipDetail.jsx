@@ -2,35 +2,74 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOneClip } from "../../redux/clips";
 import { useParams } from "react-router-dom";
-import { createDislike, createLike } from "../../redux/likes";
+import { createDislike, createLike, fetchDislikedClips, fetchLikedClips } from "../../redux/likes";
 import { postComment } from "../../redux/comments";
 import dislike_icon from '../../assets/images/dislike_icon.png';
 import heart_icon from '../../assets/images/heart_icon.png';
+import disliked from '../../assets/images/disliked_icon.png';
+import hearted from '../../assets/images/hearted_icon.webp';
 import './ClipDetail.css'
 
 
 function ClipDetail() {
     const dispatch = useDispatch();
     const { clipId } = useParams();
-    const [comment, setComment] = useState('');
     const currentClip = useSelector(state => state.clips.clipDetails);
     const comments = useSelector(state => state.comments.commentsOnClip);
-    const likes = useSelector(state => state.likes);
-    const dislikes = useSelector(state => state.dislikes);
+    const initialLikedClips = useSelector(state => state.likes.likedClips);
+    const initialDislikedClips = useSelector(state => state.likes.dislikedClips);
+    const [comment, setComment] = useState('');
+    const [dislikedClips, setDislikedClips] = useState(initialDislikedClips);
+    const [likedClips, setLikedClips] = useState(initialLikedClips);
+
 
     useEffect(() => {
         const loadClipDetails = async () => {
             await dispatch(fetchOneClip(clipId));
         };
+        const fetchClips = async () => {
+            await dispatch(fetchLikedClips());
+            await dispatch(fetchDislikedClips());
+        }
         loadClipDetails();
-    }, [dispatch, clipId, comments, likes, dislikes]);
+        fetchClips();
+    }, [dispatch, clipId, comments]);
+
+    useEffect(() => {
+        setLikedClips(initialLikedClips);
+        setDislikedClips(initialDislikedClips);
+    }, [initialLikedClips, initialDislikedClips]);
 
     const handleLike = async () => {
+        let updatedLikedClips;
+        let updatedDislikedClips;
+
+        if (likedClips.includes(parseInt(clipId))) {
+            updatedLikedClips = likedClips.filter(id => id !== parseInt(clipId));
+        } else {
+            updatedLikedClips = [...likedClips, parseInt(clipId)];
+        }
+        updatedDislikedClips = dislikedClips.filter(id => id !== parseInt(clipId));
+
         await dispatch(createLike(clipId));
+        setLikedClips(updatedLikedClips);
+        setDislikedClips(updatedDislikedClips);
     };
 
     const handleDislike = async () => {
+        let updatedLikedClips;
+        let updatedDislikedClips;
+
+        if (dislikedClips.includes(parseInt(clipId))) {
+            updatedDislikedClips = dislikedClips.filter(id => id !== parseInt(clipId));
+        } else {
+            updatedDislikedClips = [...dislikedClips, parseInt(clipId)];
+        }
+        updatedLikedClips = likedClips.filter(id => id !== parseInt(clipId));
+        
         await dispatch(createDislike(clipId));
+        setLikedClips(updatedLikedClips);
+        setDislikedClips(updatedDislikedClips);
     };
 
     const handleCommentSubmit = async (e) => {
@@ -41,7 +80,10 @@ function ClipDetail() {
         };
         await dispatch(postComment(newComment));
         setComment('');
-    }
+    };
+
+    const isLikedByCurrentUser = likedClips.includes(parseInt(clipId));
+    const isDislikedByCurrentUser = dislikedClips.includes(parseInt(clipId));
 
     return (
         <>
@@ -73,7 +115,7 @@ function ClipDetail() {
                                 <h4 className="detail-likes-count">{currentClip.num_likes}</h4>
                                 }
                                 <img 
-                                    src={heart_icon}
+                                    src={isLikedByCurrentUser ? hearted : heart_icon}
                                     alt="Like"
                                     className="detail-likes-image"
                                     onClick={handleLike}
@@ -86,7 +128,7 @@ function ClipDetail() {
                                 <h4 className="detail-likes-count">{currentClip.dislikes_count}</h4>
                                 }
                                 <img 
-                                    src={dislike_icon}
+                                    src={isDislikedByCurrentUser ? disliked : dislike_icon}
                                     alt="Dislike"
                                     className="detail-likes-image"
                                     onClick={handleDislike}

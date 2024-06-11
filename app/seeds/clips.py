@@ -9,42 +9,36 @@ def seed_clips():
         location="Mammoth Mountain Resort",
         video_file="https://traveltok.s3.us-east-2.amazonaws.com/powder_mammmoth.jpeg",
         caption="A beautiful blue bird day to snowboard",
-        is_private=False
         )
     big_bear = Clip(
         user_id=2,
         location="Snow Summit",
         video_file="https://traveltok.s3.us-east-2.amazonaws.com/bb_blue_bird.jpeg",
         caption="Lots of snow & perfect weather",
-        is_private=True
         )
     palisades = Clip(
         user_id=2,
         location="Palisades Ski Reosrt",
         video_file="https://traveltok.s3.us-east-2.amazonaws.com/palisades.jpeg",
         caption="Deep, deep powder today",
-        is_private=False
         )
     newport = Clip(
         user_id=3,
         location="Newport Beach",
         video_file="https://traveltok.s3.us-east-2.amazonaws.com/newport.jpeg",
         caption="Lovely weather to tan at the beach",
-        is_private=False
         )
     huntington = Clip(
         user_id=3,
         location="Huntington Beach",
         video_file="https://traveltok.s3.us-east-2.amazonaws.com/huntington.jpeg",
         caption="Good waves to surf",
-        is_private=False
         )
     sunset = Clip(
         user_id=3,
         location="Sunset Beach",
         video_file="https://traveltok.s3.us-east-2.amazonaws.com/sunset.jpg",
         caption="Beautiful sunset at the beach",
-        is_private=False
         )
 
     db.session.add(mammoth)

@@ -1,0 +1,79 @@
+.clip-edit-outer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    background-color: #fafafa;
+    padding-top: 50px;
+}
+
+.clip-edit-page {
+    width: 350px;
+    padding: 40px;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.clip-edit-page-header {
+    margin-bottom: 20px;
+}
+
+.clip-edit-page-header h2 {
+    font-size: 2rem;
+    color: #262626;
+}
+
+.clip-edit-page-body {
+    text-align: left;
+}
+
+.clip-edit-page-body p {
+    font-size: 36px;
+}
+
+.clip-edit-labels {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #8e8e8e;
+}
+
+.clip-edit-labels input,
+.clip-edit-labels textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    background-color: #fafafa;
+    font-size: 1rem;
+}
+
+.clip-edit-labels textarea {
+    resize: vertical;
+}
+
+.clip-edit-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.clip-edit-buttons button {
+    width: 48%;
+    padding: 10px;
+    background-color: #0095f6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.clip-edit-buttons button:hover {
+    background-color: #007bb5;
+}

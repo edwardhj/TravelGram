@@ -49,12 +49,6 @@ def get_clip_by_id(clip_id):
     if request.method == 'GET':
         clip_data = clip.to_dict()
         clip_data['creator'] = clip.uploader.username
-
-        # if the clip is private & the user logged in is not the creator of the clip
-        if clip_data['is_private'] and clip.user_id != current_user.id:
-            response = jsonify({"error": "You are not authorized to view this clip"})
-            return response, 403
-
         clip_data['comments'] = [comment.to_dict() for comment in clip.comments_on_clip]
         clip_data['num_likes'] = like_count
         clip_data['dislikes_count'] = dislike_count
@@ -74,7 +68,6 @@ def get_clip_by_id(clip_id):
         if form.validate_on_submit():
             clip.location = form.location.data
             clip.caption = form.caption.data
-            clip.is_private = form.is_private.data
             
             db.session.commit()
             return jsonify({"message": "Clip has been updated successfully"}), 200
@@ -140,7 +133,6 @@ def create_clip():
     if form.validate_on_submit():
         location = form.location.data
         caption = form.caption.data
-        is_private = form.is_private.data
         video_file = form.file.data
         video_file.filename = get_unique_filename(video_file.filename)
         upload = upload_file_to_s3(video_file)
@@ -154,7 +146,6 @@ def create_clip():
 
         new_clip = Clip(location = location,
                         caption = caption,
-                        is_private = is_private,
                         video_file = url,
                         user_id = current_user.id)
         db.session.add(new_clip)

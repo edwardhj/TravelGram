@@ -1,7 +1,6 @@
 import './ClipComment.css'
 import { useDispatch } from 'react-redux';
 import { deleteComment, updateComment } from '../../redux/comments';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import iconEdit from '../../assets/images/icon_edit.png';
 import iconTrash from '../../assets/images/icon_trash.png';

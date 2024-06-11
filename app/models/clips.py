@@ -14,7 +14,6 @@ class Clip(db.Model):
     location = db.Column(db.String(60), nullable=False)
     video_file = db.Column(db.String(255), nullable=False)
     caption = db.Column(db.Text)
-    is_private = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -28,7 +27,6 @@ class Clip(db.Model):
             'location': self.location,
             'video_file': self.video_file,
             'caption': self.caption,
-            'is_private': self.is_private,
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }

@@ -33,10 +33,17 @@
 
 .detail-user {
     order: 1;
+    display: flex;
+    flex-direction: column;
 }
   
 .detail-user h2 {
     margin-bottom: 20px;
+}
+
+.detail-buttons {
+    display: flex;
+    gap: 5px;
 }
 
 .user-comment-divider {
@@ -46,16 +53,7 @@
   
 .detail-comments {
     order: 2;
-    margin-bottom: 20px; /* Adjusted margin for better separation */
-}
-
-.details-comment-box {
-    margin-bottom: 10px;
-}
-  
-.detail-comment-detail {
-    font-size: 20px;
-    margin: 0;
+    margin-bottom: 20px;
 }
   
 .detail-likes-outer {
@@ -84,7 +82,7 @@
 }
 
 .detail-add-comment {
-    width: calc(100% - 40px); /* Adjust width of comment box */
+    width: calc(100% - 40px);
     display: flex;
     flex-direction: column;
     margin-top: auto;

@@ -1,0 +1,14 @@
+.detail-edit-button {
+    background-color: #FF8C00;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.detail-edit-button:hover {
+    background-color: #CD853F;
+}

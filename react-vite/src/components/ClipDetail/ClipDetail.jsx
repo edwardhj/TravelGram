@@ -4,6 +4,9 @@ import { fetchOneClip } from "../../redux/clips";
 import { useParams } from "react-router-dom";
 import { createDislike, createLike, fetchDislikedClips, fetchLikedClips } from "../../redux/likes";
 import { postComment } from "../../redux/comments";
+import ClipComment from "../ClipComment/ClipComment";
+import ClipDelete from "../ClipDelete/ClipDelete";
+import ClipEditButton from "../ClipEditButton/ClipEditButton";
 import dislike_icon from '../../assets/images/dislike_icon.png';
 import heart_icon from '../../assets/images/heart_icon.png';
 import disliked from '../../assets/images/disliked_icon.png';
@@ -15,6 +18,7 @@ function ClipDetail() {
     const dispatch = useDispatch();
     const { clipId } = useParams();
     const currentClip = useSelector(state => state.clips.clipDetails);
+    const currentUser = useSelector(state => state.session.user);
     const comments = useSelector(state => state.comments.commentsOnClip);
     const initialLikedClips = useSelector(state => state.likes.likedClips);
     const initialDislikedClips = useSelector(state => state.likes.dislikedClips);
@@ -96,14 +100,20 @@ function ClipDetail() {
                 <div className="detail-others">
                     <div className="detail-user">
                         <h2>{currentClip.location} ({currentClip.creator})</h2>
+                        {currentClip.user_id == currentUser.id && (
+                        <div className="detail-buttons">
+                            <ClipEditButton clip={currentClip} />
+                            <ClipDelete clipId={currentClip.id} />
+                        </div>
+                        )}
+
+                        
                         <hr className="user-comment-divider" />
                     </div>
 
                     <div className="detail-comments">
                         {currentClip.comments && currentClip.comments.map((comment) => (
-                            <div key={comment.id} className="details-comment-box">
-                                <p className="detail-comment-detail"><strong>{comment.creator}</strong>: {comment.body}</p>
-                            </div>
+                            <ClipComment key={comment.id} comment={comment} currentUser={currentUser} />
                         ))}
                     </div>
 

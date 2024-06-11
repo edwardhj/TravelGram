@@ -22,8 +22,10 @@
 }
   
 .detail-others {
-    width: 40%;
-    height: 600px;
+    width: 45%;
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -82,6 +84,7 @@
 }
 
 .detail-add-comment {
+    width: calc(100% - 40px); /* Adjust width of comment box */
     display: flex;
     flex-direction: column;
     margin-top: auto;

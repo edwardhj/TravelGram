@@ -9,12 +9,14 @@ import sessionReducer from "./session";
 import clipsReducer from "./clips";
 import commentsReducer from "./comments";
 import followsReducer from "./follows";
+import likesReducer from "./likes";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   clips: clipsReducer,
   comments: commentsReducer,
   follows: followsReducer,
+  likes: likesReducer,
 });
 
 let enhancer;

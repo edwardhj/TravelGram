@@ -23,5 +23,6 @@ class Comment(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'clip_id': self.clip_id,
-            'body': self.body
+            'body': self.body,
+            'creator': self.poster.username
         }

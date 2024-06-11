@@ -13,7 +13,7 @@ const getClips = (allClips) => ({
     allClips
 });
 
-const getClipDetails = (clip) => ({
+export const getClipDetails = (clip) => ({
     type: LOAD_ONE_CLIP,
     clip
 });

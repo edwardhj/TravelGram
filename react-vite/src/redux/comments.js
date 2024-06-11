@@ -51,7 +51,7 @@ export const fetchCommentsByCurrentUser = () => async (dispatch) => {
     }
 };
 
-export const postComment = (commentData) => async (dispatch) => {
+export const postComment = (commentData) => async (dispatch, getState) => {
     try {
         const response = await csrfFetch(`/api/clips/${commentData.clip_id}/comments`, {
             method: 'POST',
@@ -61,6 +61,11 @@ export const postComment = (commentData) => async (dispatch) => {
 
         if (response.ok) {
             dispatch(addComment(newComment));
+
+            const currentClip = getState().clips.clipDetails;
+            const updatedClip = {...currentClip};
+
+            dispatch(modifyClip(updatedClip));
             return newComment;
         } else {
             const errorMessages = await response.json();
@@ -121,7 +126,7 @@ const commentsReducer = (state = initialState, action) => {
           return { ...state, commentsByCurrentUser: action.allComments }
         case ADD_COMMENT:
           return { ...state, commentsOnClip: {...state.commentsOnClip, [action.newComment.id]: action.newComment } }
-        case UPDATE_COMMENT:
+          case UPDATE_COMMENT:
           return { ...state, commentsOnClip: {...state.commentsOnClip, [action.updatedComment.id]: action.updatedComment } }
         case DELETE_COMMENT: {             
             const newState = { ...state, commentsOnClip: { ...state.commentsOnClip } };

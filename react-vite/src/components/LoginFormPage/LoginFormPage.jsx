@@ -3,6 +3,8 @@ import { thunkLogin } from "../../redux/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import "./LoginForm.css";
+import phoneimage from '../../assets/images/icon_login.png';
+
 
 function LoginFormPage() {
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ function LoginFormPage() {
       <div className="login-outer">
 
         <div className="login-image">
-          <img id="gramLogo" src="icon_login.png" alt={'TravelGram Landing Image'} />
+          <img id="gramLogo" src={phoneimage} alt={'TravelGram Landing Image'} />
         </div>
 
         <div className="login-form">

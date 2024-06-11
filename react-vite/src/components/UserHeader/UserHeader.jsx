@@ -1,11 +1,18 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { thunkAuthenticate } from "../../redux/session";
 import './UserHeader.css'
 
 
 
 function UserHeader({ user, clipCount }) {
+    const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user);
+
+    useEffect(() => {
+        dispatch(thunkAuthenticate());
+    }, [dispatch]);
 
     return (
         <>
@@ -32,8 +39,8 @@ function UserHeader({ user, clipCount }) {
 
                     <div className="profile-header-details-middle">
                         <h3>{clipCount} Posts</h3>
-                        <h3>{clipCount} Followers</h3>
-                        <h3>{clipCount} Following</h3>
+                        <h3>{user.followers_count} Followers</h3>
+                        <h3>{user.following_count} Following</h3>
                     </div>
 
                     <div className="profile-header-details-bottom">

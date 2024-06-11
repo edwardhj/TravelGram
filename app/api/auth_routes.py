@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import User, db
+from app.models import User, db, Follow
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
@@ -14,7 +14,16 @@ def authenticate():
     Authenticates a user.
     """
     if current_user.is_authenticated:
-        return current_user.to_dict()
+        user_dict = current_user.to_dict()
+
+        follower_count = db.session.query(Follow).filter(Follow.c.following_user_id == current_user.id).count()
+        following_count = db.session.query(Follow).filter(Follow.c.follower_user_id == current_user.id).count()
+    
+        user_dict['followers_count'] = follower_count
+        user_dict['following_count'] = following_count
+
+        return user_dict
+    
     return {'message': "No user is logged in"}, 401
 
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { thunkSignup, thunkLogin } from "../../redux/session";
-import "./SignUpForm.css";
+import "./SignupForm.css";
 import phoneimage from '../../assets/images/icon_login.png';
 
 function SignupFormPage() {

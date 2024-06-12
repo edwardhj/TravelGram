@@ -33,7 +33,7 @@ const createClip = (newClip) => ({
     newClip
 });
 
-const modifyClip = (updatedClip) => ({
+export const modifyClip = (updatedClip) => ({
     type: UPDATE_CLIP,
     updatedClip
 });

@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import { modifyClip } from "./clips";
 
 const GET_COMMENTS_BY_USER = 'comments/getCommentsByUser'
 const ADD_COMMENT = 'comments/addComment'
@@ -50,6 +51,7 @@ export const fetchCommentsByCurrentUser = () => async (dispatch) => {
         return { server: "Something went wrong. Please try again" };
     }
 };
+
 
 export const postComment = (commentData) => async (dispatch, getState) => {
     try {

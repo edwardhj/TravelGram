@@ -20,7 +20,7 @@ function EditProfile() {
         let validationErrors = {};
 
         if (!firstName) validationErrors.firstName = 'First Name is required';
-        if (!lastName) validationErrors.firstName = 'Last Name is required';
+        if (!lastName) validationErrors.lastName = 'Last Name is required';
         if (!file) validationErrors.file = 'New Profile Picture is required';
         if (file && !file.type.startsWith('image/')) validationErrors.file = 'Uploaded file must be an image';
 

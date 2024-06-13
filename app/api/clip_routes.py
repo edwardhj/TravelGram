@@ -22,13 +22,13 @@ def get_all_clips():
     or_(Clip.user_id == current_user_id, Clip.user_id.in_(followed_users_ids))
     ).order_by(Clip.updated_at.desc()).all()
 
-    response = { 'clips': [] }
+    clip_arr = []
     for clip in clips:
         clip_data = clip.to_dict()
         clip_data['creator'] = clip.uploader.username
-        response['clips'].append(clip_data)
+        clip_arr.append(clip_data)
 
-    return jsonify(response)
+    return jsonify(clip_arr)
 
 # def get_all_clips():
 #     # Use joinedload to efficiently fetch related user data in one query

@@ -1,28 +1,46 @@
 from flask import Blueprint, request, jsonify, render_template, redirect
 from flask_login import current_user, login_required
-from app.models import Clip, Comment, Like, db
+from app.models import Clip, Comment, Like, db, Follow
 from sqlalchemy.orm import joinedload
-from sqlalchemy import update, and_, delete, select, func
+from sqlalchemy import update, and_, delete, select, func, or_
 from app.api.aws import upload_file_to_s3, get_unique_filename, remove_file_from_s3
-from ..forms import ClipForm, EditClipForm, CommentForm, LikeForm
+from ..forms import ClipForm, EditClipForm, CommentForm
 
 
 clip_routes = Blueprint('clips', __name__)
 
 
-# Get all Clips
+# Get all Clips of Users You Follow & Your Personal Clips (ordered by date posted)
 @clip_routes.route('/')
+@login_required
 def get_all_clips():
-    # Use joinedload to efficiently fetch related user data in one query
-    clips = Clip.query.options(joinedload(Clip.uploader)).all()
-    response = {'clips': []}
+    current_user_id = current_user.id
+    followed_users_ids = db.session.query(Follow.c.following_user_id).filter(Follow.c.follower_user_id == current_user_id).all()
+    followed_users_ids = [user_id for (user_id,) in followed_users_ids]
 
+    clips = Clip.query.options(joinedload(Clip.uploader)).filter(
+    or_(Clip.user_id == current_user_id, Clip.user_id.in_(followed_users_ids))
+    ).order_by(Clip.updated_at.desc()).all()
+
+    response = { 'clips': [] }
     for clip in clips:
         clip_data = clip.to_dict()
         clip_data['creator'] = clip.uploader.username
         response['clips'].append(clip_data)
 
     return jsonify(response)
+
+# def get_all_clips():
+#     # Use joinedload to efficiently fetch related user data in one query
+#     clips = Clip.query.options(joinedload(Clip.uploader)).all()
+#     response = {'clips': []}
+
+#     for clip in clips:
+#         clip_data = clip.to_dict()
+#         clip_data['creator'] = clip.uploader.username
+#         response['clips'].append(clip_data)
+
+#     return jsonify(response)
 
 
 # Get a Clip by clipId

@@ -32,7 +32,7 @@ function UserHeader({ user, clipCount }) {
                     <div className="profile-header-details-top">
                         <h1 id="profile-header-username">{user.username}</h1>
                         { user.id == sessionUser.id && 
-                            <NavLink id="profile-header-edit" to="/editprofile">
+                            <NavLink id="profile-header-edit" to="/profile/edit">
                                 <h3>Edit Profile</h3>
                             </NavLink>
                         }

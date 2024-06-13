@@ -7,6 +7,7 @@ import ProfilePage from '../components/ProfilePage/ProfilePage';
 import ClipDetail from '../components/ClipDetail/ClipDetail';
 import ClipEditPage from '../components/ClipEditPage/ClipEditPage';
 import ClipCreate from '../components/ClipCreate/ClipCreate';
+import EditProfile from '../components/EditProfile/EditProfile';
 
 export const router = createBrowserRouter([
   {
@@ -14,19 +15,23 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />,
+        element: <HomePage />
       },
       {
         path: "/login",
-        element: <LoginFormPage />,
+        element: <LoginFormPage />
       },
       {
         path: "/signup",
-        element: <SignupFormPage />,
+        element: <SignupFormPage />
       },
       {
         path: "/profile",
-        element: <ProfilePage />,
+        element: <ProfilePage />
+      },
+      {
+        path: "/profile/edit",
+        element: <EditProfile />
       },
       {
         path: "/clips/:clipId",

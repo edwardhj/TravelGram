@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from app.models import User, db, Follow
 from app.forms import LoginForm
 from app.forms import SignUpForm
+from app.forms import EditProfileForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.api.aws import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 
@@ -25,6 +26,44 @@ def authenticate():
         return user_dict
     
     return {'message': "No user is logged in"}, 401
+
+@auth_routes.route('/editprofile', methods=['PUT'])
+@login_required
+def edit_profile():
+    """
+    edits a user's profile
+    """
+
+    form = EditProfileForm(obj=current_user)
+
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+
+        if form.profile_pic.data:
+            filename = get_unique_filename(form.profile_pic.data.filename)
+            form.profile_pic.data.filename = filename
+            upload = upload_file_to_s3(form.profile_pic.data)
+
+            if "url" not in upload:
+                return jsonify({"error": "File upload failed", "details": upload}), 400
+            
+            current_user.profile_pic = upload["url"]
+
+        db.session.commit()
+        return jsonify({"message": "Profile has been updated successfully"}), 200
+    else:
+        error_messages = {}
+        for field, errors in form.errors.items():
+            error_messages[field] = errors[0]
+
+        response = jsonify({
+            "message": "Bad Request",
+            "error": error_messages,
+        })
+        response.status_code = 400
+        return response
 
 
 @auth_routes.route('/login', methods=['POST'])

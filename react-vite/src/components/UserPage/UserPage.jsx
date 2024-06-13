@@ -17,12 +17,10 @@ function UserPage() {
         const loadUser = async () => {
             await dispatch(thunkGetUser(userId));
         };
-        if (userId) {
-            const loadClips = async () => {
-                await dispatch(fetchClipsByUser(userId));
-            }
-            loadClips();
-        }
+        const loadClips = async () => {
+            await dispatch(fetchClipsByUser(userId));
+        };
+        loadClips();
         loadUser();
     }, [dispatch, userId]);
     

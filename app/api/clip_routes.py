@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template, redirect
 from flask_login import current_user, login_required
-from app.models import Clip, Comment, Like, db, Follow
+from app.models import Clip, Comment, Like, db, Follow, User
 from sqlalchemy.orm import joinedload
 from sqlalchemy import update, and_, delete, select, func, or_
 from app.api.aws import upload_file_to_s3, get_unique_filename, remove_file_from_s3
@@ -111,10 +111,10 @@ def get_clip_by_id(clip_id):
 # Get clips by userId
 @clip_routes.route('users/<int:user_id>')
 def get_clip_by_userId(user_id):
+    user = User.query.filter(User.id == user_id).first();
     clips = Clip.query.filter(Clip.user_id == user_id).all()
-    print(clips)
 
-    if not clips:
+    if not user:
         response = jsonify({"error": "Creator couldn't be found"})
         response.status_code = 404
         return response

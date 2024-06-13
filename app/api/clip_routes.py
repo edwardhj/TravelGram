@@ -119,12 +119,13 @@ def get_clip_by_userId(user_id):
         response.status_code = 404
         return response
 
-    response = {'clips': []}
+    clips_arr = []
 
     for clip in clips:
         clip_data = clip.to_dict()
-        response['clips'].append(clip_data)
-    return jsonify(response)
+        clips_arr.append(clip_data)
+
+    return jsonify(clips_arr)
 
 
 # Get clips by current user

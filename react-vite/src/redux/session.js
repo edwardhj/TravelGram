@@ -1,6 +1,20 @@
+import { csrfFetch } from "./csrf";
+
+const GET_USER = 'session/getUser';
+const GET_USERS = 'session/getUsers';
 const SET_USER = 'session/setUser';
 const UPDATE_USER = 'session/updateUser'
 const REMOVE_USER = 'session/removeUser';
+
+const getUser = (user) => ({
+  type: GET_USER,
+  user
+});
+
+const getUsers = (users) => ({
+  type: GET_USERS,
+  users
+}); 
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -15,6 +29,24 @@ const updateUser = user => ({
 const removeUser = () => ({
   type: REMOVE_USER
 });
+
+export const thunkGetUser = (userId) => async dispatch => {
+  const response = await csrfFetch(`/api/users/${userId}`);
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(getUser(data));
+    return data;
+  }
+}
+
+export const thunkGetAllUsers = () => async dispatch => {
+  const response = await csrfFetch("/api/users/");
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(getUsers(data.users));
+    return data;
+  }
+};
 
 export const thunkAuthenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/");
@@ -54,7 +86,7 @@ export const thunkEditProfile = (updatedUser) => async dispatch => {
 
   if(response.ok) {
     const data = await response.json();
-    dispatch(setUser(data));
+    dispatch(updateUser(data));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages
@@ -86,10 +118,14 @@ export const thunkLogout = () => async (dispatch) => {
   dispatch(removeUser());
 };
 
-const initialState = { user: null };
+const initialState = { user: null, viewedUser: {}, allUsers: {} };
 
 function sessionReducer(state = initialState, action) {
   switch (action.type) {
+    case GET_USER:
+      return { ...state, viewedUser: action.user }
+    case GET_USERS:
+      return { ...state, allUsers: action.users };
     case SET_USER:
       return { ...state, user: action.payload };
     case UPDATE_USER:

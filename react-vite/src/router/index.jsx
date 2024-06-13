@@ -9,6 +9,7 @@ import ClipEditPage from '../components/ClipEditPage/ClipEditPage';
 import ClipCreate from '../components/ClipCreate/ClipCreate';
 import EditProfile from '../components/EditProfile/EditProfile';
 import Connect from '../components/Connect/Connect';
+import UserPage from '../components/UserPage/UserPage';
 
 export const router = createBrowserRouter([
   {
@@ -47,8 +48,12 @@ export const router = createBrowserRouter([
         element: <ClipCreate />
       },
       {
-        path: "connect",
+        path: "/connect",
         element: <Connect />
+      },
+      {
+        path: "/users/:userId",
+        element: <UserPage />
       }
     ],
   },

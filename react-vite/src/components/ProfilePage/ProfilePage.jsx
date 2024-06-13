@@ -11,6 +11,8 @@ function ProfilePage() {
     const clips = useSelector(state => state.clips.clipsByCurrentUser);
     const clipsArr = Object.values(clips)
 
+    console.log(clipsArr)
+
     useEffect(() => {
         const loadClips = async () => {
             await dispatch(fetchClipsByCurrentUser());

@@ -8,7 +8,6 @@ import './HomePage.css'
 function HomePage() {
     const dispatch = useDispatch();
     const allClips = useSelector(state => state.clips.allClips);
-    const currentUser = useSelector(state => state.session.user)
 
     useEffect(() => {
         dispatch(fetchAllClips());

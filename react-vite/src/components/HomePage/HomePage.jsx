@@ -14,7 +14,6 @@ function HomePage() {
         dispatch(fetchAllClips());
     }, [dispatch]);
 
-    console.log(currentUser)
     return (
         <div className='home-page-outer'>
             <div className='clip-container'>

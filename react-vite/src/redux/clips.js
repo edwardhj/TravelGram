@@ -45,7 +45,7 @@ const removeClip = (clipId) => ({
 
 export const fetchAllClips = () => async dispatch => {
     try {
-        const response = await csrfFetch('/api/clips');
+        const response = await csrfFetch('/api/clips/');
         const clips = await response.json();
         if (response.ok) {
             dispatch(getClips(clips));

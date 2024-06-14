@@ -1,0 +1,15 @@
+.home-clip-preview-outer {
+    width: 100%;
+}
+
+.home-clip-preview-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+
+.home-clip-preview-outer:hover {
+    cursor: pointer;
+}

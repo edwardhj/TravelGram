@@ -13,7 +13,7 @@ class Clip(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
     location = db.Column(db.String(60), nullable=False)
     video_file = db.Column(db.String(255), nullable=False)
-    caption = db.Column(db.Text)
+    caption = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -28,5 +28,5 @@ class Clip(db.Model):
             'video_file': self.video_file,
             'caption': self.caption,
             'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'updated_at': self.updated_at.strftime('%B %d')
         }

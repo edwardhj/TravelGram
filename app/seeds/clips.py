@@ -311,7 +311,7 @@ def seed_clips():
         caption="One yosemite post isn't enough -- i had to post a second",
         )
     yunomi = Clip(
-        user_id=19,
+        user_id=10,
         location="Yunomi Handroll (Los Angeles)",
         video_file="https://traveltok.s3.us-east-2.amazonaws.com/yunomihandroll.webp",
         caption="yummy handrolls",

@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
-import HomePage from '../components/HomePage/HomePage';
 import ProfilePage from '../components/ProfilePage/ProfilePage';
 import ClipDetail from '../components/ClipDetail/ClipDetail';
 import ClipEditPage from '../components/ClipEditPage/ClipEditPage';
@@ -10,6 +9,7 @@ import ClipCreate from '../components/ClipCreate/ClipCreate';
 import EditProfile from '../components/EditProfile/EditProfile';
 import Connect from '../components/Connect/Connect';
 import UserPage from '../components/UserPage/UserPage';
+import LoggedIn from '../components/LoggedIn/LoggedIn';
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />
+        element: <LoggedIn />
       },
       {
         path: "/login",

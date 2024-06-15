@@ -30,8 +30,6 @@ function ClipCreate() {
         }
     };
 
-    console.log(errors, 'HEEYEEYY');
-
     const handleLocationChange = e => {
         setLocation(e.target.value);
     };

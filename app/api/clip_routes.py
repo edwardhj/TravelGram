@@ -171,7 +171,6 @@ def create_clip():
         db.session.commit()
         return jsonify({"message": "Clip successfully posted.", "clipId": new_clip.id}), 201
 
-    print(form.errors, 'HEYOSDJFL:SDFJS:LKFSD:FJSDKFL')
     return jsonify(form.errors), 400
 
 

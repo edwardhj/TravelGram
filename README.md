@@ -40,5 +40,6 @@
 ![AWS S3](https://img.shields.io/badge/Amazon%20S3-569A31?logo=amazons3&logoColor=fff&style=for-the-badge)
 <br>
 
-
+## Connect with Me
+Edward <a href="https://www.linkedin.com/in/edwardhj/">Linkedin</a> | <a href="https://github.com/edwardhj/">Github</a> 
 
